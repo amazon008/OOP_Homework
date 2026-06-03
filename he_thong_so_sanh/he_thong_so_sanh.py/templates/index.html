@@ -3,168 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>So Sánh Giá Smartphone</title>
+    <title>Hệ Thống So Sánh Giá - Dark Mode</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
+        /* 1. ĐỔI MÀU NỀN SANG MÀU ĐEN (DARK THEME) */
         body {
+            background-color: #0f0f11; /* Màu nền đen mờ cao cấp giống video */
+            color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 20px;
-            color: #333;
         }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+        /* Tùy chỉnh thanh Navbar */
+        .navbar {
+            background-color: #16161a !important;
+            border-bottom: 1px solid #232329;
         }
-        h1 {
-            text-align: center;
-            color: #1a73e8;
-            margin-bottom: 30px;
+
+        /* Thẻ hiển thị nội dung (Card) màu xám tối */
+        .custom-card {
+            background-color: #16161a;
+            border: 1px solid #232329;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
         }
-        .search-box {
-            display: flex;
-            margin-bottom: 30px;
-        }
-        .search-box input {
-            flex: 1;
-            padding: 12px;
-            font-size: 16px;
-            border: 2px solid #ddd;
-            border-radius: 4px 0 0 4px;
-            outline: none;
-        }
-        .search-box input:focus {
-            border-color: #1a73e8;
-        }
-        .search-box button {
-            padding: 12px 24px;
-            font-size: 16px;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 0 4px 4px 0;
-            cursor: pointer;
-        }
-        .search-box button:hover {
-            background-color: #1557b0;
-        }
-        .product-section {
-            margin-bottom: 40px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 20px;
-        }
-        .product-title {
-            font-size: 20px;
-            color: #202124;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        .stores-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        .store-card {
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            padding: 15px;
-            background: #fff;
+
+        /* Tùy chỉnh ô tìm kiếm giống trong video */
+        .search-container {
             position: relative;
-            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            width: 100%;
         }
-        .store-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+
+        .search-input {
+            background-color: #1f1f24 !important;
+            border: 1px solid #2d2d35 !important;
+            color: #ffffff !important;
+            border-radius: 8px !important;
+            padding-right: 45px; /* Chừa khoảng trống cho nút Clear */
+            height: 50px;
         }
-        .store-name {
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 8px;
-            color: #333;
+
+        .search-input::placeholder {
+            color: #72727e;
         }
-        .price {
-            font-size: 24px;
-            font-weight: bold;
-            color: #444;
-            margin: 10px 0;
+
+        /* 2. THIẾT KẾ NÚT CLEAR TỰA CÁC ICON TRONG VIDEO */
+        .clear-btn {
+            position: absolute;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #72727e;
+            font-size: 18px;
+            cursor: pointer;
+            display: none; /* Mặc định ẩn, có chữ mới hiện */
+            transition: color 0.2s;
+            z-index: 5;
         }
-        .badge-re-nhat {
-            background-color: #e6f4ea;
-            color: #137333;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 10px;
+
+        .clear-btn:hover {
+            color: #ffffff;
         }
-        /* Style đặc biệt cho thẻ có giá rẻ nhất */
-        .store-card.best-price {
-            border-color: #34a853;
-            background-color: #f8fff9;
-            box-shadow: 0 2px 10px rgba(52, 168, 83, 0.15);
+
+        /* Tùy chỉnh giao diện Dropdown Menu */
+        .dropdown-menu-dark {
+            background-color: #16161a;
+            border: 1px solid #2d2d35;
+            margin-top: 5px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .store-card.best-price .price {
-            color: #d93025; /* Đổi giá rẻ nhất sang màu đỏ cho kích thích */
-        }
-        .buy-btn {
-            display: inline-block;
-            margin-top: 10px;
-            color: #1a73e8;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .buy-btn:hover {
-            text-decoration: underline;
-        }
-        .no-result {
-            text-align: center;
-            color: #70757a;
-            font-size: 16px;
-            margin-top: 20px;
+        
+        .dropdown-item:hover {
+            background-color: #232329;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>📱 Hệ Thống Tổng Hợp & So Sánh Giá Smartphone</h1>
-        
-        <form action="/" method="GET" class="search-box">
-            <input type="text" name="q" placeholder="🔍 Nhập tên điện thoại bạn muốn tìm (VD: iPhone 15, S24...)" value="{{ query }}">
-            <button type="submit">Tìm kiếm</button>
-        </form>
 
-        {% if query %}
-            {% if ket_qua %}
-                {% for sp, cua_hangs in ket_qua.items() %}
-                    <div class="product-section">
-                        <div class="product-title">🏷️ {{ sp }}</div>
-                        <div class="stores-grid">
-                            {% for item in cua_hangs %}
-                                <div class="store-card {% if item.la_re_nhat %}best-price{% endif %}">
-                                    <div class="store-name">🏬 {{ item.cua_hang }}</div>
-                                    
-                                    {% if item.la_re_nhat %}
-                                        <div class="badge-re-nhat">🔥 GIÁ RẺ NHẤT</div>
-                                    {% endif %}
-                                    
-                                    <div class="price">{{ item.gia_hien_thi }}</div>
-                                    <div style="font-size: 14px; color: #666;">Đánh giá: {{ item.danh_gia }}</div>
-                                    <a href="{{ item.link }}" target="_blank" class="buy-btn">👉 Tới trang mua hàng</a>
-                                </div>
-                            {% endfor %}
+    <nav class="navbar navbar-expand-lg navbar-dark mb-5">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white" href="#">🔍 SO SÁNH GIÁ</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown" id="smartDropdown">
+                        <a class="nav-link dropdown-toggle text-white fw-semibold" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Danh mục sản phẩm
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">📱 Điện thoại</a></li>
+                            <li><a class="dropdown-item" href="#">💻 Laptop</a></li>
+                            <li><a class="dropdown-item" href="#">🖱️ Chuột Máy Tính</a></li>
+                            <li><hr class="dropdown-divider" style="border-color: #2d2d35;"></li>
+                            <li><a class="dropdown-item" href="#">ℹ️ Giới thiệu / Liên hệ</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container text-center">
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8">
+                <h1 class="display-6 fw-bold text-white mb-2">Hệ Thống So Sánh Giá</h1>
+                <p style="color: #a1a1aa;">Tìm kiếm thông minh, tối ưu chi phí mua sắm của bạn</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                <div class="card custom-card p-4">
+                    <form action="/search" method="GET">
+                        <div class="search-container mb-3">
+                            <input type="text" name="keyword" id="searchInput" class="form-control search-input" placeholder="Nhập tên sản phẩm cần tìm kiếm...">
+                            
+                            <button type="button" id="clearBtn" class="clear-btn" title="Xóa văn bản">✕</button>
                         </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <div class="no-result">❌ Không tìm thấy sản phẩm nào phù hợp với từ khóa "{{ query }}".</div>
-            {% endif %}
-        {% endif %}
+                        <button type="submit" class="btn btn-primary w-100 fw-bold py-2" style="border-radius: 8px;">Tìm Kiếm Ngay</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // --- 1. XỬ LÝ NÚT CLEAR TÌM KIẾM ---
+        const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearBtn');
+
+        // Lắng nghe khi người dùng gõ chữ
+        searchInput.addEventListener('input', function() {
+            if (this.value.length > 0) {
+                clearBtn.style.display = 'block'; // Hiện nút X khi có chữ
+            } else {
+                clearBtn.style.display = 'none'; // Ẩn đi khi ô trống
+            }
+        });
+
+        // Hành động khi nhấn vào nút X (Clear)
+        clearBtn.addEventListener('click', function() {
+            searchInput.value = ''; // Xóa sạch chữ
+            this.style.display = 'none'; // Ẩn chính nó đi
+            searchInput.focus(); // Đưa con trỏ chuột trở lại ô nhập
+        });
+
+
+        // --- 2. XỬ LÝ DROPDOWN: ẤN THÌ HIỆN - DI CHUỘT RA NGOÀI THÌ BIẾN MẤT ---
+        const smartDropdown = document.getElementById('smartDropdown');
+        const dropdownToggle = smartDropdown.querySelector('.dropdown-toggle');
+        
+        // Khởi tạo bộ điều khiển Dropdown của Bootstrap
+        const bsDropdown = new bootstrap.Dropdown(dropdownToggle);
+
+        // Sự kiện: Khi con chuột rời khỏi toàn bộ vùng của Danh mục (bao gồm cả bảng menu đang thả xuống)
+        smartDropdown.addEventListener('mouseleave', function() {
+            // Kiểm tra nếu menu đang mở thì mới đóng
+            if (dropdownToggle.classList.contains('show')) {
+                bsDropdown.hide(); 
+            }
+        });
+    </script>
 </body>
 </html>
