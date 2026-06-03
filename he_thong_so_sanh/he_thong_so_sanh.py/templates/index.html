@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hệ Thống So Sánh Giá - Dark Mode</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+   
     <style>
         /* 1. ĐỔI MÀU NỀN SANG MÀU ĐEN (DARK THEME) */
         body {
@@ -14,11 +14,13 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+
         /* Tùy chỉnh thanh Navbar */
         .navbar {
             background-color: #16161a !important;
             border-bottom: 1px solid #232329;
         }
+
 
         /* Thẻ hiển thị nội dung (Card) màu xám tối */
         .custom-card {
@@ -28,6 +30,7 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.2);
         }
 
+
         /* Tùy chỉnh ô tìm kiếm giống trong video */
         .search-container {
             position: relative;
@@ -35,6 +38,7 @@
             align-items: center;
             width: 100%;
         }
+
 
         .search-input {
             background-color: #1f1f24 !important;
@@ -45,9 +49,11 @@
             height: 50px;
         }
 
+
         .search-input::placeholder {
             color: #72727e;
         }
+
 
         /* 2. THIẾT KẾ NÚT CLEAR TỰA CÁC ICON TRONG VIDEO */
         .clear-btn {
@@ -63,9 +69,11 @@
             z-index: 5;
         }
 
+
         .clear-btn:hover {
             color: #ffffff;
         }
+
 
         /* Tùy chỉnh giao diện Dropdown Menu */
         .dropdown-menu-dark {
@@ -74,7 +82,7 @@
             margin-top: 5px !important;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        
+       
         .dropdown-item:hover {
             background-color: #232329;
         }
@@ -82,14 +90,15 @@
 </head>
 <body>
 
+
     <nav class="navbar navbar-expand-lg navbar-dark mb-5">
         <div class="container">
             <a class="navbar-brand fw-bold text-white" href="#">🔍 SO SÁNH GIÁ</a>
-            
+           
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+           
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown" id="smartDropdown">
@@ -109,6 +118,7 @@
         </div>
     </nav>
 
+
     <div class="container text-center">
         <div class="row justify-content-center mb-4">
             <div class="col-md-8">
@@ -117,13 +127,14 @@
             </div>
         </div>
 
+
         <div class="row justify-content-center">
             <div class="col-md-7">
                 <div class="card custom-card p-4">
                     <form action="/search" method="GET">
                         <div class="search-container mb-3">
                             <input type="text" name="keyword" id="searchInput" class="form-control search-input" placeholder="Nhập tên sản phẩm cần tìm kiếm...">
-                            
+                           
                             <button type="button" id="clearBtn" class="clear-btn" title="Xóa văn bản">✕</button>
                         </div>
                         <button type="submit" class="btn btn-primary w-100 fw-bold py-2" style="border-radius: 8px;">Tìm Kiếm Ngay</button>
@@ -133,12 +144,15 @@
         </div>
     </div>
 
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <script>
         // --- 1. XỬ LÝ NÚT CLEAR TÌM KIẾM ---
         const searchInput = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearBtn');
+
 
         // Lắng nghe khi người dùng gõ chữ
         searchInput.addEventListener('input', function() {
@@ -149,6 +163,7 @@
             }
         });
 
+
         // Hành động khi nhấn vào nút X (Clear)
         clearBtn.addEventListener('click', function() {
             searchInput.value = ''; // Xóa sạch chữ
@@ -157,20 +172,24 @@
         });
 
 
+
+
         // --- 2. XỬ LÝ DROPDOWN: ẤN THÌ HIỆN - DI CHUỘT RA NGOÀI THÌ BIẾN MẤT ---
         const smartDropdown = document.getElementById('smartDropdown');
         const dropdownToggle = smartDropdown.querySelector('.dropdown-toggle');
-        
+       
         // Khởi tạo bộ điều khiển Dropdown của Bootstrap
         const bsDropdown = new bootstrap.Dropdown(dropdownToggle);
+
 
         // Sự kiện: Khi con chuột rời khỏi toàn bộ vùng của Danh mục (bao gồm cả bảng menu đang thả xuống)
         smartDropdown.addEventListener('mouseleave', function() {
             // Kiểm tra nếu menu đang mở thì mới đóng
             if (dropdownToggle.classList.contains('show')) {
-                bsDropdown.hide(); 
+                bsDropdown.hide();
             }
         });
     </script>
 </body>
 </html>
+
