@@ -25,21 +25,22 @@ def khoi_tao_database():
 
     # -------------------------------------------------------------
     # DANH SÁCH DỮ LIỆU IPHONE ĐẦY ĐỦ ĐỂ TEST TÌM KIẾM VÀ BỘ LỌC
+    # (Đã cập nhật toàn bộ ảnh thật bóc từ Thế Giới Di Động)
     # -------------------------------------------------------------
     data_thu_thap_duoc = [
         # --- NHÓM GIÁ DƯỚI 10 TRIỆU ---
-        ("Apple iPhone 11 64GB Chính hãng VN/A", "8.990.000 đ", "Shopee", "https://shopee.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
-        ("iPhone 11 128GB (Hàng cũ 99%)", "7.500.000 đ", "Lazada", "https://lazada.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
+        ("Apple iPhone 11 64GB Chính hãng VN/A", "8.990.000 đ", "Shopee", "https://shopee.vn", "https://cdn.tgdd.vn/Products/Images/42/153856/iphone-11-trang-600x600.jpg"),
+        ("iPhone 11 128GB (Hàng cũ 99%)", "7.500.000 đ", "Lazada", "https://lazada.vn", "https://cdn.tgdd.vn/Products/Images/42/210644/iphone-11-128gb-xanh-la-1-200x200.jpg"),
 
         # --- NHÓM GIÁ TỪ 10 ĐẾN 20 TRIỆU ---
-        ("iPhone 13 128GB VN/A", "13.490.000 đ", "Tiki", "https://tiki.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
-        ("Apple iPhone 14 128GB Đen", "16.890.000 đ", "Shopee", "https://shopee.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
-        ("Điện thoại Apple iPhone 15 128GB", "19.790.000 đ", "Lazada", "https://lazada.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
+        ("iPhone 13 128GB VN/A", "13.490.000 đ", "Tiki", "https://tiki.vn", "https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-pink-2-600x600.jpg"),
+        ("Apple iPhone 14 128GB Đen", "16.890.000 đ", "Shopee", "https://shopee.vn", "https://cdn.tgdd.vn/Products/Images/42/240259/iPhone-14-thumb-tim-1-600x600.jpg"),
+        ("Điện thoại Apple iPhone 15 128GB", "19.790.000 đ", "Lazada", "https://lazada.vn", "https://cdn.tgdd.vn/Products/Images/42/281570/iphone-15-hong-thumb-1-600x600.png"),
 
         # --- NHÓM GIÁ TRÊN 20 TRIỆU ---
-        ("Apple iPhone 15 Pro 128GB đầy đủ màu", "24.690.000 đ", "Tiki", "https://tiki.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
-        ("iPhone 15 Pro Max 256GB Chính hãng VN/A", "29.490.000 đ", "Shopee", "https://shopee.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
-        ("iPhone 15 Pro Max 512GB Titan tự nhiên", "34.990.000 đ", "Lazada", "https://lazada.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150")
+        ("Apple iPhone 15 Pro 128GB đầy đủ màu", "24.690.000 đ", "Tiki", "https://tiki.vn", "https://cdn.tgdd.vn/Products/Images/42/299033/iphone-15-pro-blue-thumbnew-600x600.png"),
+        ("iPhone 15 Pro Max 256GB Chính hãng VN/A", "29.490.000 đ", "Shopee", "https://shopee.vn", "https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-blue-thumbnew-600x600.png"),
+        ("iPhone 15 Pro Max 512GB Titan tự nhiên", "34.990.000 đ", "Lazada", "https://lazada.vn", "https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-titan-tu-nhien-thumbnew-600x600.png")
     ]
 
     # Thực hiện lệnh ghi dữ liệu hàng loạt vào cơ sở dữ liệu
@@ -52,7 +53,7 @@ def khoi_tao_database():
     conn.commit()
     conn.close()
     
-    print("🎉 Hoàn thành! Đã nạp thành công 8 sản phẩm iPhone cực chuẩn vào file so_sanh_gia.db!")
+    print("🎉 Hoàn thành! Đã nạp thành công 8 sản phẩm iPhone với ảnh thật vào file so_sanh_gia.db!")
 
 if __name__ == '__main__':
     khoi_tao_database()
