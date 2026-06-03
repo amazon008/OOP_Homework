@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hệ Thống So Sánh Giá - Dark Mode</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+   
     <style>
         /* 1. ĐỔI MÀU NỀN SANG MÀU ĐEN (DARK THEME) */
         body {
@@ -14,11 +14,13 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+
         /* Tùy chỉnh thanh Navbar */
         .navbar {
             background-color: #16161a !important;
             border-bottom: 1px solid #232329;
         }
+
 
         /* Thẻ hiển thị nội dung (Card) và Hiệu ứng Nổi (Hover) */
         .custom-card {
@@ -29,11 +31,13 @@
             transition: all 0.3s ease;
         }
 
+
         .custom-card:hover {
             transform: translateY(-5px);
             border-color: #0d6efd;
             box-shadow: 0 12px 30px rgba(13, 110, 253, 0.2);
         }
+
 
         /* Tùy chỉnh ô tìm kiếm & Hiệu ứng Glow */
         .search-container {
@@ -42,6 +46,7 @@
             align-items: center;
             width: 100%;
         }
+
 
         .search-input {
             background-color: #1f1f24 !important;
@@ -53,15 +58,18 @@
             transition: all 0.3s;
         }
 
+
         .search-input:focus {
             box-shadow: 0 0 15px rgba(13, 110, 253, 0.4) !important;
             border-color: #0d6efd !important;
             outline: none;
         }
 
+
         .search-input::placeholder {
             color: #72727e;
         }
+
 
         /* Nút TÌM KIẾM NGAY Gradient */
         .btn-primary {
@@ -70,9 +78,11 @@
             transition: opacity 0.2s;
         }
 
+
         .btn-primary:hover {
             opacity: 0.9;
         }
+
 
         /* THIẾT KẾ NÚT CLEAR */
         .clear-btn {
@@ -88,19 +98,41 @@
             z-index: 5;
         }
 
+
         .clear-btn:hover {
             color: #ffffff;
         }
 
+
         /* Tùy chỉnh Dropdown Menu */
+        .nav-item.dropdown {
+            padding-bottom: 10px;
+        }
+       
         .dropdown-menu-dark {
             background-color: #16161a;
             border: 1px solid #2d2d35;
+            margin-top: 0 !important;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: none;
         }
-        
-        .dropdown-item { color: #ffffff; }
-        .dropdown-item:hover { background-color: #232329; color: #fff; }
+       
+        .dropdown-item:hover {
+            background-color: #232329;
+        }
+
+
+        .nav-item.dropdown:hover .dropdown-menu-dark {
+            display: block;
+            animation: fadeIn 0.2s ease-in;
+        }
+
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
 
         /* ================================================= */
         /* HIỆU ỨNG SKELETON LOADING                         */
@@ -113,6 +145,7 @@
             height: 100%;
         }
 
+
         .skeleton-box {
             background: linear-gradient(90deg, #232329 25%, #2d2d35 50%, #232329 75%);
             background-size: 200% 100%;
@@ -120,11 +153,13 @@
             border-radius: 8px;
         }
 
+
         .skel-img { height: 200px; width: 100%; margin-bottom: 15px; }
         .skel-title { height: 20px; width: 90%; margin-bottom: 15px; }
         .skel-price { height: 25px; width: 50%; margin-top: auto; margin-bottom: 15px; }
         .skel-badge { height: 32px; width: 70px; }
         .skel-btn { height: 32px; width: 95px; }
+
 
         @keyframes shimmer {
             0% { background-position: 200% 0; }
@@ -134,18 +169,19 @@
 </head>
 <body>
 
+
     <nav class="navbar navbar-expand-lg navbar-dark mb-5">
         <div class="container">
             <a class="navbar-brand fw-bold text-white" href="/">🔍 SO SÁNH GIÁ</a>
-            
+           
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+           
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-white fw-semibold" href="#" role="button" aria-expanded="false">
                             Danh mục sản phẩm
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">
@@ -162,15 +198,25 @@
         </div>
     </nav>
 
+
     <div class="container text-center">
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8">
+                <h1 class="display-6 fw-bold text-white mb-2">Hệ Thống So Sánh Giá</h1>
+                <p style="color: #a1a1aa;">Tìm kiếm thông minh, tối ưu chi phí mua sắm của bạn</p>
+            </div>
+        </div>
+
+
         <div class="row justify-content-center">
             <div class="col-md-7">
                 <div class="card custom-card p-4">
                     <form action="/search" method="GET">
                         <div class="search-container mb-3">
-                            <input type="text" name="keyword" id="searchInput" class="form-control search-input" 
+                            <input type="text" name="keyword" id="searchInput" class="form-control search-input"
                                    placeholder="Nhập tên sản phẩm cần tìm kiếm..."
                                    value="{{ keyword if keyword else '' }}">
+                           
                             <button type="button" id="clearBtn" class="clear-btn" title="Xóa văn bản">✕</button>
                         </div>
                         <button type="submit" class="btn btn-primary w-100 fw-bold py-2" style="border-radius: 8px;">Tìm Kiếm Ngay</button>
@@ -179,34 +225,169 @@
             </div>
         </div>
 
+
         {% if keyword %}
+        <div class="row mt-5 text-start">
+            <div class="col-12 mb-4">
+                <h4 class="text-white">Kết quả tìm kiếm cho: <span style="color: #0d6efd;">"{{ keyword }}"</span></h4>
+            </div>
+           
+            <div class="col-md-3 mb-4">
+                <div class="card custom-card p-4">
+                    <h5 class="text-white mb-4 fw-bold">Bộ Lọc <span style="font-size: 0.9rem;">⚙️</span></h5>
+                   
+                    <form action="/search" method="GET" id="filterForm">
+                        <input type="hidden" name="keyword" value="{{ keyword }}">
+                       
+                        <h6 class="mb-3" style="color: #0d6efd;">Nền tảng</h6>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" name="san" value="shopee" id="chkShopee" {% if 'shopee' in san_chon %}checked{% endif %}>
+                            <label class="form-check-label text-white" for="chkShopee">Shopee</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" name="san" value="lazada" id="chkLazada" {% if 'lazada' in san_chon %}checked{% endif %}>
+                            <label class="form-check-label text-white" for="chkLazada">Lazada</label>
+                        </div>
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" name="san" value="tiki" id="chkTiki" {% if 'tiki' in san_chon %}checked{% endif %}>
+                            <label class="form-check-label text-white" for="chkTiki">Tiki</label>
+                        </div>
+
+
+                        <h6 class="mb-3" style="color: #0d6efd;">Khoảng giá</h6>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="gia" value="duoi10" id="gia1" {% if muc_gia == 'duoi10' %}checked{% endif %}>
+                            <label class="form-check-label text-white" for="gia1">Dưới 10 triệu</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="gia" value="10den20" id="gia2" {% if muc_gia == '10den20' %}checked{% endif %}>
+                            <label class="form-check-label text-white" for="gia2">Từ 10 - 20 triệu</label>
+                        </div>
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="radio" name="gia" value="tren20" id="gia3" {% if muc_gia == 'tren20' %}checked{% endif %}>
+                            <label class="form-check-label text-white" for="gia3">Trên 20 triệu</label>
+                        </div>
+                       
+                        <hr style="border-color: #2d2d35;">
+                        <button type="submit" class="btn btn-outline-primary w-100 mt-2 fw-semibold">Áp dụng bộ lọc</button>
+                    </form>
+                </div>
+            </div>
+
+
+            <div class="col-md-9">
+                {% if results and results|length > 0 %}
+                   
+                    <div class="row w-100 m-0 p-0" id="skeleton-container">
+                        {% for i in range(3) %}
+                        <div class="col-md-4 mb-4">
+                            <div class="skeleton-card d-flex flex-column">
+                                <div class="skeleton-box skel-img"></div>
+                                <div class="skeleton-box skel-title"></div>
+                                <div class="skeleton-box skel-price"></div>
+                                <div class="d-flex justify-content-between mt-auto">
+                                    <div class="skeleton-box skel-badge"></div>
+                                    <div class="skeleton-box skel-btn"></div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+
+                    <div class="row w-100 m-0 p-0" id="real-data-container" style="display: none;">
+                        {% for sp in results %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card custom-card h-100 p-3">
+                                <img src="{{ sp.anh }}" class="card-img-top rounded mb-3" alt="{{ sp.ten }}" style="height: 200px; object-fit: contain; background: white;">
+                                <div class="card-body d-flex flex-column p-0">
+                                    <h6 class="card-title text-white mb-2" style="font-size: 0.95rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 40px;">{{ sp.ten }}</h6>
+                                    <p class="card-text text-danger fw-bold fs-5 mt-auto mb-3">{{ sp.gia }}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        {% if sp.san|lower == 'shopee' %}
+                                            <span class="badge px-3 py-2" style="background-color: #ee4d2d;">Shopee</span>
+                                        {% elif sp.san|lower == 'lazada' %}
+                                            <span class="badge px-3 py-2" style="background: linear-gradient(90deg, #0f13aa, #f53d89);">Lazada</span>
+                                        {% elif sp.san|lower == 'tiki' %}
+                                            <span class="badge px-3 py-2" style="background-color: #1a94ff;">Tiki</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary px-3 py-2">{{ sp.san }}</span>
+                                        {% endif %}
+                                        <a href="{{ sp.link }}" target="_blank" class="btn btn-outline-light btn-sm">Đến nơi bán</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                   
+                {% else %}
+                    <div class="card custom-card p-5 text-center h-100 d-flex justify-content-center align-items-center">
+                        <div>
+                            <h1 style="font-size: 50px;">😢</h1>
+                            <h4 class="text-white mt-3">Không có sản phẩm nào khớp với bộ lọc!</h4>
+                            <p style="color: #72727e;">Bồ hãy thử chọn khoảng giá rộng hơn hoặc tích thêm sàn nhé.</p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
         {% endif %}
+
+
     </div>
 
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
     <script>
-        // Xử lý nút Clear
+        // ==========================================
+        // 1. XỬ LÝ NÚT CLEAR (✕) TRONG Ô TÌM KIẾM
+        // ==========================================
         const searchInput = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearBtn');
-        if (searchInput.value.length > 0) clearBtn.style.display = 'block';
+
+
+        // Kiểm tra xem lúc load trang ô input đã có chữ chưa
+        if (searchInput.value.length > 0) {
+            clearBtn.style.display = 'block';
+        }
+
+
+        // Bắt sự kiện gõ chữ
         searchInput.addEventListener('input', function() {
-            clearBtn.style.display = (this.value.length > 0) ? 'block' : 'none';
+            if (this.value.length > 0) {
+                clearBtn.style.display = 'block';
+            } else {
+                clearBtn.style.display = 'none';
+            }
         });
+
+
+        // Click vào nút ✕ xóa chữ
         clearBtn.addEventListener('click', function() {
             searchInput.value = '';
             this.style.display = 'none';
             searchInput.focus();
         });
 
-        // Xử lý Skeleton
-        const skel = document.getElementById('skeleton-container');
-        const real = document.getElementById('real-data-container');
-        if (skel && real) {
+
+        // ==========================================
+        // 2. LOGIC ĐIỀU KHIỂN SKELETON LOADING
+        // ==========================================
+        const skeletonContainer = document.getElementById('skeleton-container');
+        const realDataContainer = document.getElementById('real-data-container');
+
+
+        if (skeletonContainer && realDataContainer) {
+            // Giả lập hiệu ứng quét dữ liệu nhấp nháy trong 0.8s (800ms)
             setTimeout(() => {
-                skel.style.display = 'none';
-                real.style.display = 'flex';
+                skeletonContainer.style.display = 'none'; // Ẩn bộ xương
+                realDataContainer.style.display = 'flex'; // Hiện dữ liệu thật
             }, 800);
         }
     </script>
 </body>
 </html>
+
