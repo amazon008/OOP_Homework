@@ -1,12 +1,17 @@
 import sqlite3
+import os
 
-# 1. HÀM TẠO DATABASE VÀ BẢNG LƯU TRỮ
 def khoi_tao_database():
-    # Sẽ tự động tạo ra file so_sanh_gia.db trong thư mục của bạn
+    print("🔄 Đang khởi tạo và nạp dữ liệu vào Database...")
+    
+    # Kết nối tới file dữ liệu SQLite (Tự động tạo file nếu chưa có)
     conn = sqlite3.connect('so_sanh_gia.db')
     cursor = conn.cursor()
 
-    # Tạo bảng chứa dữ liệu sản phẩm
+    # XÓA BẢNG CŨ (Nếu có) để cập nhật danh sách iPhone mới không bị trùng lặp dữ liệu cũ
+    cursor.execute("DROP TABLE IF EXISTS san_pham")
+
+    # TẠO BẢNG MỚI với cấu trúc chuẩn: tên, giá, sàn, link, ảnh
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS san_pham (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,39 +22,37 @@ def khoi_tao_database():
             anh TEXT NOT NULL
         )
     ''')
-    conn.commit()
-    return conn
 
-# 2. HÀM CHẠY CÀO DỮ LIỆU VÀ LƯU VÀO KHO
-def chay_tool_cao_du_lieu():
-    conn = khoi_tao_database()
-    cursor = conn.cursor()
-
-    # Xóa dữ liệu cũ (tùy chọn) để cập nhật giá mới mỗi ngày
-    cursor.execute('DELETE FROM san_pham')
-
-    print("Đang tiến hành cào dữ liệu (Mô phỏng)...")
-    
     # -------------------------------------------------------------
-    # SAU NÀY BẠN SẼ VIẾT CODE CÀO THẬT BẰNG SELENIUM/BEAUTIFULSOUP Ở ĐÂY.
-    # HIỆN TẠI MÌNH BƠM DATA MẪU VÀO DATABASE ĐỂ WEB CÓ CÁI HIỂN THỊ.
+    # DANH SÁCH DỮ LIỆU IPHONE ĐẦY ĐỦ ĐỂ TEST TÌM KIẾM VÀ BỘ LỌC
     # -------------------------------------------------------------
     data_thu_thap_duoc = [
-        ("iPhone 15 Pro Max 256GB Chính hãng VN/A", "29.490.000 đ", "Shopee", "https://shopee.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
+        # --- NHÓM GIÁ DƯỚI 10 TRIỆU ---
+        ("Apple iPhone 11 64GB Chính hãng VN/A", "8.990.000 đ", "Shopee", "https://shopee.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
+        ("iPhone 11 128GB (Hàng cũ 99%)", "7.500.000 đ", "Lazada", "https://lazada.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
+
+        # --- NHÓM GIÁ TỪ 10 ĐẾN 20 TRIỆU ---
+        ("iPhone 13 128GB VN/A", "13.490.000 đ", "Tiki", "https://tiki.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
+        ("Apple iPhone 14 128GB Đen", "16.890.000 đ", "Shopee", "https://shopee.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
         ("Điện thoại Apple iPhone 15 128GB", "19.790.000 đ", "Lazada", "https://lazada.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
-        ("Apple iPhone 15 Pro 128GB đầy đủ màu", "24.690.000 đ", "Tiki", "https://tiki.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150")
+
+        # --- NHÓM GIÁ TRÊN 20 TRIỆU ---
+        ("Apple iPhone 15 Pro 128GB đầy đủ màu", "24.690.000 đ", "Tiki", "https://tiki.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
+        ("iPhone 15 Pro Max 256GB Chính hãng VN/A", "29.490.000 đ", "Shopee", "https://shopee.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150"),
+        ("iPhone 15 Pro Max 512GB Titan tự nhiên", "34.990.000 đ", "Lazada", "https://lazada.vn", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150")
     ]
 
-    # Insert toàn bộ data cào được vào Database
+    # Thực hiện lệnh ghi dữ liệu hàng loạt vào cơ sở dữ liệu
     cursor.executemany('''
-        INSERT INTO san_pham (ten, gia, san, link, anh)
+        INSERT INTO san_pham (ten, gia, san, link, anh) 
         VALUES (?, ?, ?, ?, ?)
     ''', data_thu_thap_duoc)
 
+    # Lưu lại thay đổi và đóng file database
     conn.commit()
-    print(f"Đã lưu thành công {len(data_thu_thap_duoc)} sản phẩm vào Database!")
     conn.close()
+    
+    print("🎉 Hoàn thành! Đã nạp thành công 8 sản phẩm iPhone cực chuẩn vào file so_sanh_gia.db!")
 
 if __name__ == '__main__':
-    # Khi chạy file này, nó sẽ tạo DB và nạp dữ liệu
-    chay_tool_cao_du_lieu()
+    khoi_tao_database()

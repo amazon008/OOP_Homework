@@ -5,58 +5,85 @@ import os
 app = Flask(__name__)
 
 # -------------------------------------------------------------------------
-# HÀM TRUY VẤN DATABASE (MÔ HÌNH LƯU TRỮ TỐI ƯU)
+# HÀM TRUY VẤN VÀ LỌC DỮ LIỆU
 # -------------------------------------------------------------------------
-def tim_kiem_trong_database(keyword):
-    # Nếu người dùng không nhập gì mà ấn tìm kiếm thì trả về mảng rỗng
+def tim_kiem_trong_database(keyword, san_chon, muc_gia):
     if not keyword:
         return []
     
-    # Kiểm tra an toàn: Nếu chưa có file DB (chưa chạy crawler.py) thì dừng lại
     if not os.path.exists('so_sanh_gia.db'):
-        print("CẢNH BÁO: Không tìm thấy file so_sanh_gia.db. Vui lòng chạy file crawler.py trước để tạo DB!")
+        print("CẢNH BÁO: Không tìm thấy file so_sanh_gia.db. Vui lòng chạy file crawler.py!")
         return []
 
-    # Mở kết nối tới Database SQLite
     conn = sqlite3.connect('so_sanh_gia.db')
-    
-    # Ép kiểu dữ liệu trả về thành Dictionary để dễ dàng gọi {{ sp.ten }}, {{ sp.gia }} trên HTML
     conn.row_factory = sqlite3.Row 
     cursor = conn.cursor()
 
-    # Câu lệnh SQL: Tìm kiếm các sản phẩm có tên chứa từ khóa
-    # Ký tự '%' đại diện cho bất kỳ chuỗi nào (Tìm kiếm tương đối)
+    # Lấy toàn bộ sản phẩm khớp từ khóa
     sql_query = "SELECT * FROM san_pham WHERE ten LIKE ?"
-    
     cursor.execute(sql_query, ('%' + keyword + '%',))
     ket_qua = cursor.fetchall()
-    
-    # Đóng kết nối để giải phóng tài nguyên
     conn.close()
     
-    return ket_qua
+    # --- BẮT ĐẦU XỬ LÝ LỌC DỮ LIỆU BẰNG PYTHON ---
+    ket_qua_da_loc = []
+    
+    for row in ket_qua:
+        sp = dict(row)
+        
+        # 1. Lọc theo nền tảng (Shopee, Lazada, Tiki)
+        # Nếu người dùng có chọn sàn, và sàn của sản phẩm KHÔNG nằm trong danh sách chọn -> Bỏ qua
+        if san_chon and sp['san'].lower() not in [s.lower() for s in san_chon]:
+            continue
+            
+        # 2. Lọc theo mức giá
+        if muc_gia:
+            # Chuyển "29.490.000 đ" -> Thành số nguyên 29490000 để so sánh
+            gia_str = sp['gia'].replace('.', '').replace(' đ', '').replace('đ', '').replace(',', '').strip()
+            try:
+                gia_int = int(gia_str)
+            except ValueError:
+                gia_int = 0 # Tránh lỗi web nếu giá bị sai định dạng
+                
+            # Kiểm tra các điều kiện giá
+            if muc_gia == 'duoi10' and gia_int >= 10000000:
+                continue
+            if muc_gia == '10den20' and (gia_int < 10000000 or gia_int > 20000000):
+                continue
+            if muc_gia == 'tren20' and gia_int <= 20000000:
+                continue
+                
+        # Nếu qua được hết các bộ lọc trên thì đưa vào danh sách hiển thị
+        ket_qua_da_loc.append(sp)
+        
+    return ket_qua_da_loc
 
 # -------------------------------------------------------------------------
 # CẤU HÌNH ĐỊNH TUYẾN FLASK (ROUTES)
 # -------------------------------------------------------------------------
-
-# 1. TRANG CHỦ: Hiển thị giao diện tìm kiếm ban đầu
 @app.route('/')
 def home():
     return render_template('index.html')
 
-# 2. TRANG KẾT QUẢ TÌM KIẾM
 @app.route('/search', methods=['GET'])
 def search():
-    # Lấy từ khóa người dùng nhập từ ô <input name="keyword">, xoá khoảng trắng thừa ở 2 đầu
     keyword = request.args.get('keyword', '').strip()
     
-    # Truy vấn dữ liệu siêu tốc từ Database
-    ket_qua_tim_kiem = tim_kiem_trong_database(keyword)
+    # Lấy danh sách các sàn được tick (Checkbox trả về dạng list)
+    san_chon = request.args.getlist('san') 
     
-    # Render ra trang index.html kèm theo từ khóa và kết quả tìm được
-    return render_template('index.html', keyword=keyword, results=ket_qua_tim_kiem)
+    # Lấy mức giá được chọn (Radio button trả về 1 value)
+    muc_gia = request.args.get('gia', '') 
+    
+    # Truyền thêm tham số lọc vào hàm
+    ket_qua_tim_kiem = tim_kiem_trong_database(keyword, san_chon, muc_gia)
+    
+    # Trả các biến về HTML để form ghi nhớ trạng thái người dùng đã chọn
+    return render_template('index.html', 
+                           keyword=keyword, 
+                           results=ket_qua_tim_kiem,
+                           san_chon=san_chon,
+                           muc_gia=muc_gia)
 
 if __name__ == '__main__':
-    # Chạy ứng dụng dưới Local
     app.run(debug=True)
